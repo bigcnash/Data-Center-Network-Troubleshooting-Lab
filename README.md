@@ -9,6 +9,7 @@ The environment includes segmented web, application, database, and management ne
 After validating normal connectivity, the LEAF-01 to SPINE-01 uplink was intentionally disabled to simulate a network failure. OSPF detected the topology change and automatically rerouted traffic through SPINE-02 while maintaining end-to-end connectivity between the web and application networks.
 
 The failed link was then restored, the OSPF adjacency re-formed, and the network returned to its normal redundant state.
+
 ![Final Data Center Topology](01-final-datacenter-topology.png)
 
 ## Skills Demonstrated
@@ -25,6 +26,9 @@ The failed link was then restored, the OSPF adjacency re-formed, and the network
 - Route Failover
 - Network Troubleshooting
 - Connectivity Verification
+- Fault Isolation
+- Service Restoration
+
 ## Network Architecture
 
 The lab uses a redundant spine-leaf design consisting of:
@@ -75,7 +79,9 @@ After configuring the routed fabric, VLANs, gateways, and OSPF, connectivity was
 
 ### OSPF Redundancy
 
-LEAF-01 successfully formed OSPF adjacencies with both spine switches, providing two available Layer 3 paths through the data center fabric.
+LEAF-01 successfully formed OSPF adjacencies with both spine switches.
+
+This confirmed that two Layer 3 paths were available from the leaf switch into the data center fabric.
 
 ![OSPF Redundant Neighbors](02-ospf-redundancy.png)
 
@@ -83,13 +89,13 @@ LEAF-01 successfully formed OSPF adjacencies with both spine switches, providing
 
 Connectivity was tested from WEB-01 to APP-01 across the routed spine-leaf fabric.
 
-The test returned four successful replies with 0% packet loss.
+The test returned four successful replies with 0% packet loss, confirming end-to-end communication between the web and application networks.
 
 ![Cross Fabric Connectivity](03-cross-fabric-connectivity.png)
 
 ## Failure Simulation and Troubleshooting
 
-To test network resiliency, the uplink between LEAF-01 and SPINE-01 was intentionally shut down.
+After establishing normal connectivity across the data center, the uplink between LEAF-01 and SPINE-01 was intentionally shut down to simulate a network path failure.
 
 Before the failure, traffic from WEB-01 to APP-01 followed the SPINE-01 path:
 
@@ -100,13 +106,39 @@ WEB-01
 → LEAF-02
 → APP-01
 ```
+
+After the uplink was disabled, OSPF detected the topology change and recalculated the route.
+
+Traffic automatically failed over to SPINE-02:
+
+```text
+WEB-01
+→ LEAF-01
+→ SPINE-02
+→ LEAF-02
+→ APP-01
+```
+
+A second traceroute confirmed that the traffic path had changed while the destination remained reachable.
+
+![OSPF Failover - Traffic Rerouted Through SPINE-02](04-ospf-failover.png)
+
+## Incident Resolution
+
+The failed LEAF-01 to SPINE-01 uplink was restored using the `no shutdown` command.
+
+After the interface returned to service, OSPF re-established the neighbor relationship and both redundant spine paths became available again.
+
+This validated the full troubleshooting cycle:
+
+**Normal Operation → Simulated Failure → Route Failover → Connectivity Verification → Link Restoration → OSPF Reconvergence**
+
 ## Conclusion
-This project demonstrated the design, configuration, validation, and troubleshooting of a redundant data center network.
 
-The environment used a spine-leaf architecture with Layer 3 routed uplinks, VLAN segmentation, inter-VLAN routing, and OSPF dynamic routing. Connectivity was verified between web, application, database, and management networks.
+This project demonstrated the design, configuration, verification, and troubleshooting of a redundant Layer 3 data center network.
 
-The most important part of the lab was the failure simulation. After the LEAF-01 to SPINE-01 uplink was intentionally disabled, OSPF detected the topology change and automatically redirected traffic through SPINE-02. End-to-end connectivity remained available throughout the failure.
+The lab combined spine-leaf architecture, VLAN segmentation, inter-VLAN routing, OSPF dynamic routing, and redundant uplinks into a working environment supporting web, application, database, and management networks.
 
-After the failed link was restored, OSPF reconverged and both redundant paths returned to service.
+The failure simulation demonstrated the most important objective of the project: maintaining connectivity when a network path becomes unavailable. OSPF automatically redirected traffic through the remaining spine path, and normal redundancy was restored after the failed link returned to service.
 
-This lab provided hands-on experience with the type of cabling, interface configuration, verification, fault isolation, redundancy, and network troubleshooting used in data center environments.
+The project provided hands-on practice with network cabling, Cisco IOS configuration, IP addressing, route verification, fault isolation, redundancy, and service restoration.
