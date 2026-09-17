@@ -1,17 +1,14 @@
-# Data-Center-Network-Troubleshooting-Lab
-Cisco Packet Tracer data center lab featuring spine-leaf architecture, VLAN segmentation, OSPF dynamic routing, redundant paths, failure simulation, troubleshooting, and automatic failover.
 # Data Center Network Redundancy & Troubleshooting Lab
 
 ## Project Overview
 
-This project simulates a highly available data center network using Cisco Packet Tracer.
+This project simulates a redundant data center network built in Cisco Packet Tracer using a Layer 3 spine-leaf architecture.
 
-The environment was designed around a spine-leaf architecture with redundant network paths, segmented server networks, Layer 3 routing, and OSPF dynamic routing.
+The environment includes segmented web, application, database, and management networks connected through redundant spine switches. OSPF was configured across the routed fabric to provide dynamic route exchange and automatic path failover.
 
-Rather than stopping after building a working topology, the lab included a simulated uplink failure to test how the network would respond. After the primary path was disabled, OSPF automatically rerouted traffic through the redundant spine switch while maintaining connectivity between the web and application servers.
+After validating normal connectivity, the LEAF-01 to SPINE-01 uplink was intentionally disabled to simulate a network failure. OSPF detected the topology change and automatically rerouted traffic through SPINE-02 while maintaining end-to-end connectivity between the web and application networks.
 
-The failed link was then restored and the network reconverged back to a healthy redundant state.
-
+The failed link was then restored, the OSPF adjacency re-formed, and the network returned to its normal redundant state.
 ![Final Data Center Topology](01-final-datacenter-topology.png)
 
 ## Skills Demonstrated
