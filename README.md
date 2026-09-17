@@ -71,3 +71,15 @@ Each leaf switch maintains a routed connection to both spine switches. OSPF prov
 | SPINE-01 ↔ LEAF-02 | 10.0.1.4/30 |
 | SPINE-02 ↔ LEAF-01 | 10.0.1.8/30 |
 | SPINE-02 ↔ LEAF-02 | 10.0.1.12/30 |
+
+## Conclusion
+
+This project demonstrated the design, configuration, validation, and troubleshooting of a redundant data center network.
+
+The environment used a spine-leaf architecture with Layer 3 routed uplinks, VLAN segmentation, inter-VLAN routing, and OSPF dynamic routing. Connectivity was verified between web, application, database, and management networks.
+
+The most important part of the lab was the failure simulation. After the LEAF-01 to SPINE-01 uplink was intentionally disabled, OSPF detected the topology change and automatically redirected traffic through SPINE-02. End-to-end connectivity remained available throughout the failure.
+
+After the failed link was restored, OSPF reconverged and both redundant paths returned to service.
+
+This lab provided hands-on experience with the type of cabling, interface configuration, verification, fault isolation, redundancy, and network troubleshooting used in data center environments.
