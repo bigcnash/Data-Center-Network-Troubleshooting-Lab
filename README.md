@@ -72,6 +72,37 @@ Each leaf switch maintains a routed connection to both spine switches. OSPF prov
 | SPINE-02 ↔ LEAF-01 | 10.0.1.8/30 |
 | SPINE-02 ↔ LEAF-02 | 10.0.1.12/30 |
 
+## Network Verification
+
+After configuring the routed fabric, VLANs, gateways, and OSPF, connectivity was verified across the data center.
+
+### OSPF Redundancy
+
+LEAF-01 successfully formed OSPF adjacencies with both spine switches, providing two available Layer 3 paths through the data center fabric.
+
+![OSPF Redundant Neighbors](02-ospf-redundancy.png)
+
+### Cross-Fabric Connectivity
+
+Connectivity was tested from WEB-01 to APP-01 across the routed spine-leaf fabric.
+
+The test returned four successful replies with 0% packet loss.
+
+![Cross Fabric Connectivity](03-cross-fabric-connectivity.png)
+
+## Failure Simulation and Troubleshooting
+
+To test network resiliency, the uplink between LEAF-01 and SPINE-01 was intentionally shut down.
+
+Before the failure, traffic from WEB-01 to APP-01 followed the SPINE-01 path:
+
+```text
+WEB-01
+→ LEAF-01
+→ SPINE-01
+→ LEAF-02
+→ APP-01
+
 ## Conclusion
 
 This project demonstrated the design, configuration, validation, and troubleshooting of a redundant data center network.
