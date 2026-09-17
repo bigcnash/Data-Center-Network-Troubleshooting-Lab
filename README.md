@@ -102,9 +102,8 @@ WEB-01
 → SPINE-01
 → LEAF-02
 → APP-01
-
+```
 ## Conclusion
-
 This project demonstrated the design, configuration, validation, and troubleshooting of a redundant data center network.
 
 The environment used a spine-leaf architecture with Layer 3 routed uplinks, VLAN segmentation, inter-VLAN routing, and OSPF dynamic routing. Connectivity was verified between web, application, database, and management networks.
