@@ -1,3 +1,5 @@
+![AWS Network Banner](aws-network-banner.png)
+
 # Data Center Network Redundancy & Troubleshooting Lab
 
 ## Project Overview
